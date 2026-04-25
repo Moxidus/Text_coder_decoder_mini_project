@@ -55,7 +55,7 @@ class UserInterface:
 
     def update_password(self,e: events.GenericEventArguments):
 
-        # update password stregth bar
+        # update password strength bar
         passwd_strength = 0
         if len(self.password_field.value) >= 10:
             passwd_strength = 1
