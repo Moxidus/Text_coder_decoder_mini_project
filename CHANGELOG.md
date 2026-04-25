@@ -6,6 +6,7 @@
 * chore: added basic project structure
 * chore: added basic instruction for each file
 * chore: added requirements.txt (empty for now)
+* chore: added empty tests folder
 
 
 ## 0.1.1
