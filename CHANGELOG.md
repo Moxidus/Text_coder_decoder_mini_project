@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.3
+
+## What's Changed
+* feat: implemeted ceasar cypher as a placeholder (will be replaced in the future with acual algo)
+* feat: implemeted placeholder unit tests
+* chore: added pyproject.toml
+
 ## 0.1.2
 
 ## What's Changed
