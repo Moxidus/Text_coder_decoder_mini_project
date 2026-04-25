@@ -8,6 +8,7 @@
 * feat: made userInterface into object
 * feat: added password strength measurement
 * fix: fixed spelling
+* feat: implemented file selection into the ui
 
 ## 0.1.3
 

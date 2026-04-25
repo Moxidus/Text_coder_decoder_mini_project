@@ -18,49 +18,63 @@ o operation status (success/failure + reason)
 """
 
 from ui.localFilePicker import localFilePicker
+from core.fileHandler import FileHandler
 from nicegui import events, ui
 
+
+class State:
+    password = ""
+    file_path = ""
+    file_content = ""
 
 class UserInterface:
 
     def __init__(self):
-        ui.page('/')(self.index)
+        self.state = State()
+        self.fileHandler = FileHandler()
+        ui.page("/")(self.index)
     
     async def pick_file(self) -> None:
-        result = await localFilePicker()
-        ui.notify(f'Opening {result}')
-        
+        self.state.file_path = await localFilePicker()
+        ui.notify(f'Opening {self.state.file_path}')
+
+        # TODO: check what file type it is
+
+        self.state.file_content = self.fileHandler.open_plain_text(self.state.file_path)
+
+
     def index(self):
         with ui.header():
             ui.label("Text Coder and Decoder").classes("text-white text-2xl text-center w-full")
 
         with ui.row().classes("w-full flex-nowrap"):
-            with ui.column():
-                ui.button('Choose file', on_click=self.pick_file, icon='folder')
-                with ui.column():
-                    self.password_field = ui.input('Code word', on_change=self.update_password)
-                    self.password_strength_bar = ui.linear_progress(value=0, show_value=False)
-                with ui.row():
-                    ui.button('Encode')
-                    ui.button('Decode')
-                ui.label("Selected file: <lorem>")
+            with ui.column().classes("shrink-0"):
+                ui.button('Choose file', on_click=self.pick_file, icon='folder').classes("w-full")
+                with ui.column().classes("w-full"):
+                    ui.input('Code word', on_change=self.handle_password_update).bind_value(self.state, "password").classes("w-full")
+                    self.password_strength_bar = ui.linear_progress(value=0, show_value=False).classes("w-full")
+                with ui.row().classes("w-full"):
+                    ui.button('Encode').classes("w-full")
+                    ui.button('Decode').classes("w-full")
                 with ui.row():
                     ui.label("Output path: <lorem>")
                     ui.button(icon="content_copy")
 
-            ui.textarea(label="File preview" ).props("readonly").classes("flex-grow")
+            with ui.column().classes("flex-grow w-full"):
+                ui.label("Selected file:")
+                ui.label("").bind_text(self.state, "file_path")
+                ui.textarea(label="File preview" ).props("readonly").classes("w-full h-full").bind_value(self.state, "file_content")
         
         with ui.footer():
             pass
 
-    def update_password(self,e: events.GenericEventArguments):
-
+    def handle_password_update(self, e: events.GenericEventArguments):
         # update password strength bar
         passwd_strength = 0
-        if len(self.password_field.value) >= 10:
+        if len(self.state.password) >= 10:
             passwd_strength = 1
         else:
-            passwd_strength = len(self.password_field.value) / 10
+            passwd_strength = len(self.state.password) / 10
         self.password_strength_bar.value = passwd_strength
 
 
