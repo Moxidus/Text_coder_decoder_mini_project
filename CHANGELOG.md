@@ -1,5 +1,11 @@
 # Changelog
 
+
+## 0.1.4
+
+## What's Changed
+* fix: fixed naming of local file picker
+
 ## 0.1.3
 
 ## What's Changed

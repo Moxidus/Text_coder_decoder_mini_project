@@ -17,7 +17,7 @@ o operation status (success/failure + reason)
 
 """
 
-from ui.localFilePicker import local_file_picker
+from ui.localFilePicker import localFilePicker
 from nicegui import ui
 
 
@@ -25,7 +25,7 @@ class UserInterface:
     pass
 
 async def pick_file() -> None:
-    result = await local_file_picker()
+    result = await localFilePicker()
     ui.notify(f'You chose {result}')
 
 
@@ -35,10 +35,14 @@ def index():
          ui.label("Text Coder and Decoder").classes("text-white text-2xl text-center w-full")
 
     ui.button('Choose file', on_click=pick_file, icon='folder')
-    ui.input('Code word')
+    
+    with ui.column():
+        ui.input('Code word')
+        ui.slider(min=0, max=1)
     with ui.row():
         ui.button('Encode')
         ui.button('Decode')
+    ui.label("Selected file: <lorem>")
     with ui.row():
         ui.label("Output path: <lorem>")
         ui.button(icon="content_copy")
