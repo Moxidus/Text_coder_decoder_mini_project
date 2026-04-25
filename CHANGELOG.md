@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.2
+
+## What's Changed
+* chore: added requirements.txt
+* chore: added basic project structure
+
 
 ## 0.1.1
 
