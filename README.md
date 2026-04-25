@@ -1,1 +1,1 @@
-# Text coder decoder Mini project
+# Text coder decoder - Mini Project
