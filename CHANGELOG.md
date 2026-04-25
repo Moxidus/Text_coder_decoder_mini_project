@@ -3,9 +3,11 @@
 ## 0.1.3
 
 ## What's Changed
+* feat: implemeted open plain file FileHandler and its tests
 * feat: implemeted ceasar cypher as a placeholder (will be replaced in the future with acual algo)
 * feat: implemeted placeholder unit tests
 * chore: added pyproject.toml
+* feat: Added local file picker based on https://github.com/zauberzeug/nicegui/blob/main/examples/local_file_picker/local_file_picker.py
 
 ## 0.1.2
 
