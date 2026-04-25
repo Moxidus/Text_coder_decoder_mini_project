@@ -14,8 +14,11 @@ class FileHandler:
 
 
     def open_plain_text(self, file_path):
-        pass
+        with open(file_path) as f:
+            content = f.read()
+
+            return content
 
     
     def open_coded_file(self, file_path):
-        pass
+        raise NotImplementedError()
