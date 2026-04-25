@@ -7,7 +7,7 @@ Class for Data Coding (Encoding)
 using a codeword to transform it into a coded text file that is not humanreadable as plain text, but is fully reversible using the same software and the
 correct codeword. Simple character substitution alone is not sufficient.
 
-Current implementation is just ceasar cipher as a placeholder as a placeholder
+Current implementation is just caesar cipher as a placeholder as a placeholder
 
 """
 
