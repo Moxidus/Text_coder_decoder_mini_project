@@ -3,8 +3,9 @@
 ## 0.1.2
 
 ## What's Changed
-* chore: added requirements.txt
 * chore: added basic project structure
+* chore: added basic instruction for each file
+* chore: added requirements.txt (empty for now)
 
 
 ## 0.1.1
