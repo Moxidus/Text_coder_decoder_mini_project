@@ -5,6 +5,7 @@
 
 ## What's Changed
 * fix: moved run script to main.py
+* fix: requirements updated
 
 ## 0.1.4
 
