@@ -1,6 +1,11 @@
 # Changelog
 
 
+## 0.1.5
+
+## What's Changed
+* fix: moved run script to main.py
+
 ## 0.1.4
 
 ## What's Changed
