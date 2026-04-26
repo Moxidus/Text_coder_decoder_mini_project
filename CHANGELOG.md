@@ -7,6 +7,8 @@
 * fix: moved run script to main.py
 * fix: requirements updated
 * feat: configured ui unit testing
+* feat: implemented basic saving option
+* feat: implemented place holder decoding support
 
 ## 0.1.4
 

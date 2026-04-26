@@ -62,7 +62,7 @@ class UserInterface:
 
         else:
             self.state.file_type = file_type
-            raise NotImplementedError()
+            self.state.file_content = file_content
         
         # disable save button
         self.state.file_ready = False
@@ -123,9 +123,21 @@ class UserInterface:
     def handle_decode(self, e: events.GenericEventArguments):
         ui.notify(f'Decrypting {self.state.file_path}')
 
+
     async def handle_save(self, e: events.GenericEventArguments):
-        save_path = await localFileSaver(FileType.ENCRYPTED)
+        save_path = await localFileSaver(self.state.file_type)
+        
         ui.notify(f'Saving to {save_path}')
+
+        try:
+            if self.state.file_type == FileType.ENCRYPTED:
+                self.fileHandler.save_encrypted_text(save_path, self.state.file_content, "")
+            else:
+                self.fileHandler.save_text(save_path, self.state.file_content)
+        except Exception as e:
+            ui.notify(f'Failed to save to {save_path} \n Error: {repr(e)}')
+            
+
 
 
 

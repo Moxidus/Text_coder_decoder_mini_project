@@ -24,8 +24,10 @@ class FileHandler:
         # check file extension and treat it as plain or encrypted file
         suffix = Path(file_path).suffix
 
-        if suffix == "sect":
-            raise NotImplementedError("sect files are not supported yet")
+        print(suffix)
+        if suffix == ".sect":
+            file_text = self.open_coded_file(file_path)
+            return FileType.ENCRYPTED, file_text
         else: # treat as a
             file_text = self.open_plain_text(file_path)
             return FileType.TEXT, file_text
@@ -34,8 +36,19 @@ class FileHandler:
     def open_plain_text(self, file_path):
         with open(file_path) as f:
             content = f.read()
-
             return content
 
     def open_coded_file(self, file_path):
-        raise NotImplementedError()
+        with open(file_path) as f:
+            content = f.read()
+            return content
+    
+    def save_text(self, file_path, content):
+        "Saves file as a plain text file"
+        with open(file_path, "w") as f:
+            f.write(content)
+    
+    def save_encrypted_text(self, file_path, content, salt):
+        "Saves file with additional data like salt"
+        with open(file_path, "w") as f:
+            f.write(content)
