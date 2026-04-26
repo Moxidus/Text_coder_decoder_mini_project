@@ -19,6 +19,7 @@ o operation status (success/failure + reason)
 
 from ui.localFilePicker import localFilePicker
 from core.fileHandler import FileHandler, FileType
+from core.coder import Coder
 from nicegui import events, ui
 
 
@@ -26,12 +27,22 @@ class State:
     password = ""
     file_path = ""
     file_content = ""
+    file_type = FileType.UNKNOWN
+
+    @property
+    def can_encode(self):
+        return self.file_type == FileType.TEXT
+
+    @property
+    def can_decode(self):
+        return self.file_type == FileType.ENCRYPTED
 
 class UserInterface:
 
     def __init__(self):
         self.state = State()
         self.fileHandler = FileHandler()
+        self.coder = Coder()
         ui.page("/")(self.index)
     
     async def pick_file(self) -> None:
@@ -43,9 +54,14 @@ class UserInterface:
 
         # check for file type
         if file_type == FileType.TEXT:
+            self.state.file_type = file_type
             self.state.file_content = file_content
+
         else:
+            self.state.file_type = file_type
             raise NotImplementedError()
+        
+        print(self.file_type)
 
 
     def index(self):
@@ -58,9 +74,13 @@ class UserInterface:
                 with ui.column().classes("w-full"):
                     ui.input('Code word', on_change=self.handle_password_update).bind_value(self.state, "password").classes("w-full")
                     self.password_strength_bar = ui.linear_progress(value=0, show_value=False).classes("w-full")
+
                 with ui.row().classes("w-full"):
-                    ui.button('Encode').classes("w-full")
-                    ui.button('Decode').classes("w-full")
+                    ui.button('Encode', on_click=self.handle_encode).classes("w-full") \
+                        .bind_enabled(self.state, 'can_encode') # Disable if selected file is not text
+                    ui.button('Decode', on_click=self.handle_decode).classes("w-full") \
+                        .bind_enabled(self.state, 'can_decode') # Disable if selected file is not encrypted
+                    
                 with ui.row():
                     ui.label("Output path: <lorem>")
                     ui.button(icon="content_copy")
@@ -83,7 +103,16 @@ class UserInterface:
         self.password_strength_bar.value = passwd_strength
 
 
+    def handle_encode(self, e: events.GenericEventArguments):
+        ui.notify(f'Creating encrypted version of {self.state.file_path}')
 
+        result = self.coder.encode(self.state.password, self.state.file_content)
+
+        self.state.file_content = result
+        
+
+    def handle_decode(self, e: events.GenericEventArguments):
+        ui.notify(f'Decrypting {self.state.file_path}')
 
 
 if __name__ in {"__main__", "__mp_main__"}:

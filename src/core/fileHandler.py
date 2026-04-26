@@ -12,6 +12,7 @@ from pathlib import Path
 from enum import Enum
 
 class FileType(Enum):
+    UNKNOWN = 0
     TEXT = 1
     ENCRYPTED = 2
 

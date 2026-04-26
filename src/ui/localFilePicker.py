@@ -21,8 +21,6 @@ class localFilePicker(ui.dialog):
         """Local File Picker
 
         This is a simple file picker that allows you to select a file from the local filesystem where NiceGUI is running.
-
-        :param directory: The directory to start in.
         """
         super().__init__()
         self.path = self.get_desktop_path()
