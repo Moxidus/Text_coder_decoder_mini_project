@@ -6,6 +6,7 @@
 ## What's Changed
 * fix: moved run script to main.py
 * fix: requirements updated
+* feat: configured ui unit testing
 
 ## 0.1.4
 
