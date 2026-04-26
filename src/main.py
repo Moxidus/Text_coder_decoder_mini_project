@@ -4,4 +4,4 @@ from nicegui import ui
 
 if __name__ in {"__main__", "__mp_main__"}:
       UserInterface()
-      ui.run(native=True)
+      ui.run(native=True, reload=False)

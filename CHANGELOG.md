@@ -11,6 +11,7 @@
 * feat: implemented place holder decoding support
 * chore: Created and updated environment setup files
 * fix: added handle for no file picked 
+* feat: added support for app packaging
 
 ## 0.1.4
 
