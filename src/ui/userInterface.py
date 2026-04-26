@@ -21,11 +21,12 @@ from ui.localFilePicker import localFilePicker
 from ui.localFileSaver import localFileSaver
 from core.fileHandler import FileHandler, FileType
 from core.coder import Coder
+from core.decoder import Decoder
 from nicegui import events, ui
 
 
 class State:
-    password = ""
+    key = ""
     salt = ""
     file_path = ""
     file_content = ""
@@ -46,6 +47,7 @@ class UserInterface:
         self.state = State()
         self.fileHandler = FileHandler()
         self.coder = Coder()
+        self.decoder = Decoder()
         ui.page("/")(self.index)
     
     async def pick_file(self) -> None:
@@ -77,7 +79,7 @@ class UserInterface:
             with ui.column().classes("shrink-0"):
                 ui.button('Choose file', on_click=self.pick_file, icon='folder').classes("w-full")
                 with ui.column().classes("w-full"):
-                    ui.input('Code word', on_change=self.handle_password_update).bind_value(self.state, "password").classes("w-full")
+                    ui.input('Code word', on_change=self.handle_password_update).bind_value(self.state, "key").classes("w-full")
                     self.password_strength_bar = ui.linear_progress(value=0, show_value=False).classes("w-full")
 
                 with ui.row().classes("w-full"):
@@ -104,17 +106,17 @@ class UserInterface:
     def handle_password_update(self, e: events.GenericEventArguments):
         # update password strength bar
         passwd_strength = 0
-        if len(self.state.password) >= 10:
+        if len(self.state.key) >= 10:
             passwd_strength = 1
         else:
-            passwd_strength = len(self.state.password) / 10
+            passwd_strength = len(self.state.key) / 10
         self.password_strength_bar.value = passwd_strength
 
 
     def handle_encode(self, e: events.GenericEventArguments):
         ui.notify(f'Creating encrypted version of {self.state.file_path}')
 
-        result = self.coder.encode(self.state.password, self.state.file_content)
+        result = self.coder.encode(self.state.key, self.state.file_content)
 
         self.state.file_content = result
         self.state.file_ready = True
@@ -122,6 +124,12 @@ class UserInterface:
 
     def handle_decode(self, e: events.GenericEventArguments):
         ui.notify(f'Decrypting {self.state.file_path}')
+        
+        result = self.decoder.decode(self.state.key, self.state.file_content)
+
+        self.state.file_content = result
+        self.state.file_ready = True
+        self.state.file_type = FileType.TEXT
 
 
     async def handle_save(self, e: events.GenericEventArguments):
