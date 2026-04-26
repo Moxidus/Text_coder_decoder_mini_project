@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.6
+
+## What's Changed
+* chore: Move Caesar Cipher into a separate file
+* feat: Caesar Cipher accepts different shift values
+* feat: Caesar Cipher has method to convert passkey to shift
+* chore: wrote tests for CaesarCipher.py
 
 ## 0.1.5
 
