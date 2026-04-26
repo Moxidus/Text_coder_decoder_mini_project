@@ -60,11 +60,11 @@ class localFilePicker(ui.dialog):
 
     def update_drive(self):
         "Handles drive change"
-        self.path = Path(self.drives_toggle.value).expanduser() # expands ~ to actually dirrectory
+        self.path = Path(self.drives_toggle.value).expanduser() # expands ~ to actually directory
         self.update_grid()
 
     def update_grid(self) -> None:
-        paths = list(self.path.glob("*")) # returns all files in current directory
+        paths = list(self.path.glob("*")) # returns all files and folders in current directory
         paths.sort(key=lambda p: p.name.lower()) # sort by name
         paths.sort(key=lambda p: not p.is_dir()) # show directories first
 
