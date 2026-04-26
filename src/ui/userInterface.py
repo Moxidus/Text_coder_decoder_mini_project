@@ -18,7 +18,7 @@ o operation status (success/failure + reason)
 """
 
 from ui.localFilePicker import localFilePicker
-from core.fileHandler import FileHandler
+from core.fileHandler import FileHandler, FileType
 from nicegui import events, ui
 
 
@@ -38,9 +38,14 @@ class UserInterface:
         self.state.file_path = await localFilePicker()
         ui.notify(f'Opening {self.state.file_path}')
 
-        # TODO: check what file type it is
 
-        self.state.file_content = self.fileHandler.open_plain_text(self.state.file_path)
+        file_type, file_content = self.fileHandler.open(self.state.file_path)
+
+        # check for file type
+        if file_type == FileType.TEXT:
+            self.state.file_content = file_content
+        else:
+            raise NotImplementedError()
 
 
     def index(self):
