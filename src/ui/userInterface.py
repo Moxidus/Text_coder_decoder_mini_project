@@ -18,6 +18,7 @@ o operation status (success/failure + reason)
 """
 
 from ui.localFilePicker import localFilePicker
+from ui.localFileSaver import localFileSaver
 from core.fileHandler import FileHandler, FileType
 from core.coder import Coder
 from nicegui import events, ui
@@ -25,9 +26,11 @@ from nicegui import events, ui
 
 class State:
     password = ""
+    salt = ""
     file_path = ""
     file_content = ""
     file_type = FileType.UNKNOWN
+    file_ready = False
 
     @property
     def can_encode(self):
@@ -61,7 +64,9 @@ class UserInterface:
             self.state.file_type = file_type
             raise NotImplementedError()
         
-        print(self.file_type)
+        # disable save button
+        self.state.file_ready = False
+        
 
 
     def index(self):
@@ -80,7 +85,10 @@ class UserInterface:
                         .bind_enabled(self.state, 'can_encode') # Disable if selected file is not text
                     ui.button('Decode', on_click=self.handle_decode).classes("w-full") \
                         .bind_enabled(self.state, 'can_decode') # Disable if selected file is not encrypted
-                    
+                
+                ui.button('Save', on_click=self.handle_save).classes("w-full") \
+                    .bind_enabled(self.state, 'file_ready') # Disable if selected file is not encrypted
+                
                 with ui.row():
                     ui.label("Output path: <lorem>")
                     ui.button(icon="content_copy")
@@ -109,10 +117,16 @@ class UserInterface:
         result = self.coder.encode(self.state.password, self.state.file_content)
 
         self.state.file_content = result
-        
+        self.state.file_ready = True
+        self.state.file_type = FileType.ENCRYPTED
 
     def handle_decode(self, e: events.GenericEventArguments):
         ui.notify(f'Decrypting {self.state.file_path}')
+
+    async def handle_save(self, e: events.GenericEventArguments):
+        save_path = await localFileSaver(FileType.ENCRYPTED)
+        ui.notify(f'Saving to {save_path}')
+
 
 
 if __name__ in {"__main__", "__mp_main__"}:

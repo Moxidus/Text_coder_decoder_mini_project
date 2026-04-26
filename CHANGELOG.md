@@ -9,6 +9,9 @@
 * feat: added password strength measurement
 * fix: fixed spelling
 * feat: implemented file selection into the ui
+* feat: Buttons get enabled and disabled based on selected file type
+* feat: Added confirmation pop up
+* feat: implemented saving dialog 
 
 ## 0.1.3
 
