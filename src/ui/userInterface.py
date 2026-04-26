@@ -51,10 +51,13 @@ class UserInterface:
         ui.page("/")(self.index)
     
     async def pick_file(self) -> None:
-        self.state.file_path = await localFilePicker()
+        picked_file = await localFilePicker()
+
+        if picked_file == None:
+            return
+        
+        self.state.file_path = picked_file
         ui.notify(f'Opening {self.state.file_path}')
-
-
         file_type, file_content = self.fileHandler.open(self.state.file_path)
 
         # check for file type
@@ -134,6 +137,9 @@ class UserInterface:
 
     async def handle_save(self, e: events.GenericEventArguments):
         save_path = await localFileSaver(self.state.file_type)
+        
+        if save_path == None:
+            return
         
         ui.notify(f'Saving to {save_path}')
 

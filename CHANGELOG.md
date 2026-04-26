@@ -10,6 +10,7 @@
 * feat: implemented basic saving option
 * feat: implemented place holder decoding support
 * chore: Created and updated environment setup files
+* fix: added handle for no file picked 
 
 ## 0.1.4
 
