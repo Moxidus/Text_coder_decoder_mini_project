@@ -23,6 +23,7 @@ from core.fileHandler import FileHandler, FileType
 from core.coder import Coder
 from core.decoder import Decoder
 from nicegui import events, ui
+import pyperclip
 
 
 class State:
@@ -32,6 +33,7 @@ class State:
     file_content = ""
     file_type = FileType.UNKNOWN
     file_ready = False
+    file_output = ""
 
     @property
     def can_encode(self):
@@ -40,6 +42,10 @@ class State:
     @property
     def can_decode(self):
         return self.file_type == FileType.ENCRYPTED
+    
+    @property
+    def output_ready(self):
+        return self.file_output != None and self.file_output != ""
 
 class UserInterface:
 
@@ -94,14 +100,17 @@ class UserInterface:
                 ui.button('Save', on_click=self.handle_save).classes("w-full") \
                     .bind_enabled(self.state, 'file_ready') # Disable if selected file is not encrypted
                 
-                with ui.row():
-                    ui.label("Output path: <lorem>")
-                    ui.button(icon="content_copy")
 
             with ui.column().classes("flex-grow w-full"):
                 ui.label("Selected file:")
                 ui.label("").bind_text(self.state, "file_path")
                 ui.textarea(label="File preview" ).props("readonly").classes("w-full h-full").bind_value(self.state, "file_content")
+                with ui.column():
+                    ui.label("Output path:")
+                    with ui.row():
+                        ui.label("None").bind_text(self.state, "file_output")
+                        ui.button(icon="content_copy", on_click=self.handle_copy).bind_enabled(self.state, "output_ready")
+
         
         with ui.footer():
             pass
@@ -134,6 +143,9 @@ class UserInterface:
         self.state.file_ready = True
         self.state.file_type = FileType.TEXT
 
+    def handle_copy(self, e: events.GenericEventArguments):
+        ui.notify(f'Copied path to clipboard')
+        pyperclip.copy(self.state.file_output)
 
     async def handle_save(self, e: events.GenericEventArguments):
         save_path = await localFileSaver(self.state.file_type)
@@ -150,7 +162,8 @@ class UserInterface:
                 self.fileHandler.save_text(save_path, self.state.file_content)
         except Exception as e:
             ui.notify(f'Failed to save to {save_path} \n Error: {repr(e)}')
-            
+        finally:
+            self.state.file_output = str(save_path)
 
 
 

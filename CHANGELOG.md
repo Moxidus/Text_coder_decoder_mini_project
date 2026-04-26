@@ -12,6 +12,7 @@
 * chore: Created and updated environment setup files
 * fix: added handle for no file picked 
 * feat: added support for app packaging
+* feat: implemented copy path to clipboard feature
 
 ## 0.1.4
 
