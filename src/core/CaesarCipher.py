@@ -8,7 +8,7 @@ Author: Moxidus
 
 class caesarCipher:
     """
-    Class implementing simple Caesar cypher.
+    Class implementing simple Caesar cipher.
     * Use encode() to encode
     * Use decode() to decode
     * Use string_to_shift() to get shift from passkey
@@ -16,14 +16,14 @@ class caesarCipher:
 
     def encode(self, shift: int, text : str) -> str:
         """
-        Simple Caesar cypher with custom shift
+        Simple Caesar cipher with custom shift
         * Non alphabetical characters are untouched
         * Capitalization is ignored
         Args:
             shift (int): Caesar shift value.
             text (str): text 
         Returns:
-            str: Caesar cypher of the original text
+            str: Caesar cipher of the original text
         """
         # input validation
         if not self.is_valid_shift(shift):
@@ -51,12 +51,12 @@ class caesarCipher:
     
     def decode(self, shift: int, text : str) -> str:
         """
-        Simple Caesar cypher with custom shift, non alpha characters are untouched
+        Simple Caesar cipher with custom shift, non alpha characters are untouched
         Args:
             shift (int): Caesar shift value.
             text (str): text 
         Returns:
-            str: Caesar cypher of the original text
+            str: Caesar v of the original text
         """
         return self.encode(-shift, text)
     
