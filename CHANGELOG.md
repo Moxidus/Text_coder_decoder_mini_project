@@ -9,6 +9,7 @@
 * feat: configured ui unit testing
 * feat: implemented basic saving option
 * feat: implemented place holder decoding support
+* chore: Created and updated environment setup files
 
 ## 0.1.4
 
