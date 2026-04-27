@@ -9,6 +9,8 @@
 * chore: wrote tests for CaesarCipher.py
 * feat: implemented more secure ChaCha20 inspired CustomCipher.py
 * feat: implemented CustomCipher supports custom salt (used for testing)
+* feat: Coder supports both CaesarCipher and CaesarCipher
+* chore: fixed unit tests for Coder
 
 ## 0.1.5
 
