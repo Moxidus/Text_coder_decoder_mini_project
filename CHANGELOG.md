@@ -16,6 +16,7 @@
 * feat: Files now get labeled based on what type of encryption the use
 * feat: Added option to select different encryption 
 * feat: Encryption runs on different threads to not block UI updates
+* feat: Enabled dark mode
 
 
 ## 0.1.5
