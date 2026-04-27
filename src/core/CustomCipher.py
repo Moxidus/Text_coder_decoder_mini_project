@@ -21,12 +21,17 @@ class customCipher:
     * Use decode() to decode
     """
     HASH_CONSTANTS = (0x243F6A88, 0x85A308D3, 0x13198A2E, 0x03707344, 0xA4093822, 0x299F31D0, 0x082EFA98, 0xEC4E6C89) # First hexadecimal digits of pi
+    SALT_CHAR_SET = "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~"
 
-    def encode(self, passkey: str, text : str):
+    def encode(self, passkey: str, text : str, custom_salt: str = None):
 
+            
+        if custom_salt:
+            salt_base = custom_salt
+        else:
+            salt_base = self.new_salt()
 
         hashed_key = self.heavy_text_hash(passkey)
-        salt_base = self.new_salt()
         simple_salt = self.heavy_text_hash(salt_base)
         test_key_list = self.generate_lock(hashed_key, simple_salt)
 
@@ -64,14 +69,18 @@ class customCipher:
             locked = x^test_key_list[index % len(test_key_list)]
             byte_list.append(locked)
 
-        return base64.b64encode(bytes(byte_list)).decode('utf-8'), salt_base
+        # merge salt to the encoded result
+
+        return base64.b64encode(bytes(byte_list)).decode('utf-8') + salt_base
     
     def new_salt(self):
-        salt_base = random.randbytes(8)
-        salt_base = bytearray([(x % 106) + 21  for x in salt_base])
-        return salt_base.decode("utf-8")
+        salt_base = random.choices(self.SALT_CHAR_SET, k=8)
+        return "".join(salt_base)
 
-    def decode(self, passkey: str, encrypted_base64, salt_base) -> str:
+    def decode(self, passkey: str, encrypted_base64: str) -> str:
+
+        salt_base = encrypted_base64[-8:]
+        encrypted_base64 = encrypted_base64[:-8]
 
         hashed_key = self.heavy_text_hash(passkey)
         simple_salt = self.heavy_text_hash(salt_base)
@@ -179,21 +188,15 @@ class customCipher:
 
 if __name__ == "__main__":
     coder = customCipher()
-    # simple_salt = coder.heavy_text_hash("salt_base")
-    # hashed_key = coder.heavy_text_hash("passkey")
-    # lock = coder.generate_lock(hashed_key, simple_salt)
-    # print(lock)
-    # print(len(lock))
-
-
-    original = "Why did you make me do this? You're fighting so you can watch everyone around you die! Think, Mark! You'll outlast every fragile, insignificant being on this planet. You'll live to see this world crumble to dust and blow away! Everyone and everything you know will be gone! What will you have after 500 years?"*5000
+    original = "Why did you make me do this? You're fighting so you can watch everyone around you die! Think, Mark!"
     print("Start test")
     print("origin  text:", original)
-    res, salt_base = coder.encode("secure password", original)
-    print("Encoded text:", res)
-    print()
+    encoded_result = coder.encode("secure password", original, custom_salt="abcdefgh")
+
+    print("Encoded text:", encoded_result)
+
     try:
-        res2 = coder.decode("secure password", res, salt_base)
+        res2 = coder.decode("secure password", encoded_result)
     except:
         print("Wrong password!")
     else:

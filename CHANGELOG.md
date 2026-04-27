@@ -8,6 +8,7 @@
 * feat: Caesar Cipher has method to convert passkey to shift
 * chore: wrote tests for CaesarCipher.py
 * feat: implemented more secure ChaCha20 inspired CustomCipher.py
+* feat: implemented CustomCipher supports custom salt (used for testing)
 
 ## 0.1.5
 
