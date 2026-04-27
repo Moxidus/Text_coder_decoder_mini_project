@@ -21,6 +21,7 @@ from ui.localFilePicker import localFilePicker
 from ui.localFileSaver import localFileSaver
 from core.fileHandler import FileHandler, FileType
 from core.coder import Coder, EncryptionType
+from core.performanceEvaluator import PerformanceEvaluator, PerformanceStats
 from core.decoder import Decoder
 from nicegui import ui, run, events
 import pyperclip
@@ -28,12 +29,18 @@ import pyperclip
 class State:
     key = ""
     salt = ""
-    file_path = ""
+    file_source_path = ""
     file_content = ""
     file_type = FileType.UNKNOWN
     file_ready = False
     file_output = ""
     selected_cipher = EncryptionType.CUSTOM_CIPHER
+    plain_text_size = None
+    coded_text_size = None
+    plain_text_length = None
+    coded_text_length = None
+    fer = None
+
 
     @property
     def selected_cipher_name(self):
@@ -58,6 +65,7 @@ class UserInterface:
         self.fileHandler = FileHandler()
         self.coder = Coder()
         self.decoder = Decoder()
+        self.perf_eval = PerformanceEvaluator()
         ui.page("/")(self.index)
     
     async def pick_file(self) -> None:
@@ -66,9 +74,9 @@ class UserInterface:
         if picked_file == None:
             return
         
-        self.state.file_path = picked_file
-        ui.notify(f"Opening {self.state.file_path}")
-        file_type, file_content = self.fileHandler.open(self.state.file_path)
+        self.state.file_source_path = picked_file
+        ui.notify(f"Opening {self.state.file_source_path}")
+        file_type, file_content = self.fileHandler.open(self.state.file_source_path)
 
         # check for file type
         if file_type == FileType.TEXT:
@@ -117,15 +125,30 @@ class UserInterface:
 
             with ui.column().classes("flex-grow w-full"):
                 ui.label("Selected file:")
-                ui.label("").bind_text(self.state, "file_path")
+                ui.label("").bind_text(self.state, "file_source_path")
                 ui.textarea(label="File preview" ).props("readonly").classes("w-full h-full").bind_value(self.state, "file_content")
                 with ui.column():
                     ui.label("Output path:")
                     with ui.row():
                         ui.label("None").bind_text(self.state, "file_output")
                         ui.button(icon="content_copy", on_click=self.handle_copy).bind_enabled(self.state, "output_ready")
+                with ui.row():
+                    ui.label("plain text size: ")
+                    ui.label("").bind_text(self.state, "plain_text_size")
+                with ui.row():
+                    ui.label("plain text length: ")
+                    ui.label("").bind_text(self.state, "plain_text_length")
+                with ui.row():
+                    ui.label("coded text size: ")
+                    ui.label("").bind_text(self.state, "coded_text_size")
+                with ui.row():
+                    ui.label("coded text length: ")
+                    ui.label("").bind_text(self.state, "coded_text_length")
+                with ui.row():
+                    ui.label("File expansion ratio: ")
+                    ui.label("").bind_text(self.state, "fer")
 
-        
+
         with ui.footer():
             pass
 
@@ -179,7 +202,7 @@ class UserInterface:
         self.state.file_content = result
         self.state.file_ready = True
         self.state.file_type = FileType.ENCRYPTED
-        ui.notify("Successfully encrypted content")
+        ui.notify("Successfully encrypted content", color="green")
 
     async def handle_decode(self, e: events.GenericEventArguments):
         ui.notify(f"Decrypting please wait...")
@@ -195,7 +218,7 @@ class UserInterface:
             self.state.file_content = result
             self.state.file_ready = True
             self.state.file_type = FileType.TEXT
-            ui.notify(f"Successfully decrypted content")
+            ui.notify(f"Successfully decrypted content", color="green")
         except:
             ui.notify(f"Wrong password!", color="red")
             return
@@ -221,6 +244,19 @@ class UserInterface:
             ui.notify(f"Failed to save to {save_path} \n Error: {repr(e)}")
         finally:
             self.state.file_output = str(save_path)
+            self.update_stats()
+
+    def update_stats(self):
+        if self.state.file_type == FileType.ENCRYPTED:
+            result = self.perf_eval.get_performance(self.state.file_output, self.state.file_source_path)
+        else:
+            result = self.perf_eval.get_performance(self.state.file_source_path, self.state.file_output)
+
+        self.state.plain_text_size = result.plain_text_size
+        self.state.coded_text_size = result.coded_text_size
+        self.state.plain_text_length = result.plain_text_length
+        self.state.coded_text_length = result.coded_text_length
+        self.state.fer = result.fer
 
 
 

@@ -33,19 +33,26 @@ class PerformanceEvaluator:
         coded_text_size = self.file_handler.get_file_size(encoded_path)
 
 
-        plain_text_length = self.file_handler.open_plain_text(decoded_path)
-        coded_text_length = self.file_handler.open_coded_file(encoded_path)
-
+        plain_text_length = len(self.file_handler.open_plain_text(decoded_path))
+        coded_text_length = len(self.file_handler.open_coded_file(encoded_path))
+        
         fer = (coded_text_size / plain_text_size) * 100
 
         print("Stats:")
         print("plain text size:", plain_text_size)
         print("plain text length:", plain_text_length)
         print("coded text size:", coded_text_size)
-        print("plain text length:", coded_text_length)
+        print("coded text length:", coded_text_length)
         print("File expansion ratio:", fer)
 
         stats = PerformanceStats(plain_text_size, plain_text_length, coded_text_size, coded_text_length, fer)
 
         return stats
 
+
+
+
+if __name__ == "__main__":
+    perf = PerformanceEvaluator()
+
+    print(perf.get_performance(r"C:\Users\domku\OneDrive\Plocha\.testE\secureText.sect", r"C:\Users\domku\OneDrive\Plocha\.testE\personal information.txt"))

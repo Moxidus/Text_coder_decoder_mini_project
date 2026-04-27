@@ -4,6 +4,7 @@
 
 ## What's Changed
 * feat: added performance evaluation class
+* feat: performance statistics are displayed on save
 
 
 ## 0.1.6
