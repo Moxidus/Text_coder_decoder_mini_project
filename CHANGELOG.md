@@ -7,6 +7,7 @@
 * feat: Caesar Cipher accepts different shift values
 * feat: Caesar Cipher has method to convert passkey to shift
 * chore: wrote tests for CaesarCipher.py
+* feat: implemented more secure ChaCha20 inspired CustomCipher.py
 
 ## 0.1.5
 
@@ -37,7 +38,7 @@
 
 ## What's Changed
 * feat: implemented open plain file FileHandler and its tests
-* feat: implemented cesar cypher as a placeholder (will be replaced in the future with actual algo)
+* feat: implemented cesar cipher as a placeholder (will be replaced in the future with actual algo)
 * feat: implemented placeholder unit tests
 * chore: added pyproject.toml
 * feat: Added local file picker based on https://github.com/zauberzeug/nicegui/blob/main/examples/local_file_picker/local_file_picker.py
