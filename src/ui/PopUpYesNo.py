@@ -1,10 +1,4 @@
-
-import platform
-from pathlib import Path
-from nicegui import events, ui
-from core.fileHandler import FileType
-
-
+from nicegui import ui
 
 
 class popUpYesNo(ui.dialog):

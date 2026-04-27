@@ -24,7 +24,6 @@ from core.coder import Coder, EncryptionType
 from core.decoder import Decoder
 from nicegui import ui, run, events
 import pyperclip
-from threading import Thread
 
 class State:
     key = ""
@@ -204,6 +203,6 @@ class UserInterface:
 
 if __name__ in {"__main__", "__mp_main__"}:
       UserInterface()
-      ui.run(native=True, reload=False)
+      ui.run(native=True, reload=False, window_size=(1300, 800))
 
 
