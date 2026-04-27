@@ -10,6 +10,7 @@ o Write the coded output file and the decoded output file.
 
 from pathlib import Path
 from enum import Enum
+import os
 
 class FileType(Enum):
     UNKNOWN = 0
@@ -52,3 +53,6 @@ class FileHandler:
         "Saves file with additional data like salt"
         with open(file_path, "w") as f:
             f.write(content)
+
+    def get_file_size(self, file_path) -> int:
+        return os.path.getsize(file_path)
