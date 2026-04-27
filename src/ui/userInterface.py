@@ -203,6 +203,6 @@ class UserInterface:
 
 if __name__ in {"__main__", "__mp_main__"}:
       UserInterface()
-      ui.run(native=True, reload=False, window_size=(1300, 800))
+      ui.run(native=True, dark= True, reload=False, window_size=(1300, 800))
 
 
