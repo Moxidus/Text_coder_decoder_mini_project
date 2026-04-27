@@ -32,16 +32,15 @@ class customCipher:
 
         text_byte_array = bytearray(text, 'utf-8')
 
-        text_byte_array_rest = 8 - (len(text_byte_array) % 8)
 
-        # print(text_byte_array_rest)
-
-        # padding = bytearray([])
-        padding = bytearray([13]*(text_byte_array_rest-1))
+        # padding the text to round it to divisible by 64, borrowed from PKCS#7 padding
+        text_byte_array_rest = 64 - (len(text_byte_array) % 64)
+        # print("padding_size", text_byte_array_rest)
+        padding = bytearray([text_byte_array_rest]*(text_byte_array_rest-1))
         padding.append(text_byte_array_rest)
 
 
-        text_byte_array += padding # add padding to make it divisible by 8
+        text_byte_array += padding # add padding to make it divisible by 64
         # print(text_byte_array)
 
         check_sum = self.heavy_byte_hash(text_byte_array)
@@ -54,8 +53,8 @@ class customCipher:
 
         for index, x in enumerate(text_byte_array):
 
-            if index % 8 == 0 and index != 0:
-                text_sect = text_byte_array[index - 8:index]
+            if index % 64 == 0 and index != 0:
+                text_sect = text_byte_array[index - 64:index]
                 # print(f"text secret {index}:",text_sect)
                 simple_salt = self.heavy_byte_hash(text_sect, 10) # take last 8 unencrypted bytes and use it to generate new key     
                 # print("result salt",simple_salt)   
@@ -83,13 +82,10 @@ class customCipher:
         byte_list = bytearray()
 
         for index, x in enumerate(encrypted_byte_list):
-            if index % 8 == 0 and index != 0:
-                # print("Last 8:",byte_list[index - 8:index])
-                text_sect = byte_list[index - 8:index]
-                
-                # print(f"text secret {index}:",text_sect)
+            if index % 64 == 0 and index != 0:
+                text_sect = byte_list[index - 64:index]
+                # print(text_sect)
                 simple_salt = self.heavy_byte_hash(text_sect, 10) # take last 8 unencrypted bytes and use it to generate new key 
-                # print(simple_salt)
                 test_key_list = self.generate_lock(hashed_key, simple_salt)
 
             locked = x^test_key_list[index % len(test_key_list)]
@@ -108,7 +104,7 @@ class customCipher:
         # print("new check sum:", new_check_sum)
 
         padding_size = text_plus_padding[-1:][0]
-        # print(padding_size)
+        # print("padding_size", padding_size)
         plain_text = text_plus_padding[:-padding_size]
 
         if check_sum != new_check_sum:
@@ -116,9 +112,6 @@ class customCipher:
 
         return plain_text.decode("utf-8")
 
-        
-
-        
     def generate_lock(self, passkey , salt):
         passkey_list =passkey
 
@@ -186,15 +179,21 @@ class customCipher:
 
 if __name__ == "__main__":
     coder = customCipher()
+    # simple_salt = coder.heavy_text_hash("salt_base")
+    # hashed_key = coder.heavy_text_hash("passkey")
+    # lock = coder.generate_lock(hashed_key, simple_salt)
+    # print(lock)
+    # print(len(lock))
 
-    original = "Why did you make me do this? You're fighting so you can watch everyone around you die! Think, Mark! You'll outlast every fragile, insignificant being on this planet. You'll live to see this world crumble to dust and blow away! Everyone and everything you know will be gone! What will you have after 500 years?"
+
+    original = "Why did you make me do this? You're fighting so you can watch everyone around you die! Think, Mark! You'll outlast every fragile, insignificant being on this planet. You'll live to see this world crumble to dust and blow away! Everyone and everything you know will be gone! What will you have after 500 years?"*5000
     print("Start test")
     print("origin  text:", original)
-    res, salt_base = coder.encode("a", original)
+    res, salt_base = coder.encode("secure password", original)
     print("Encoded text:", res)
     print()
     try:
-        res2 = coder.decode("a", res, salt_base)
+        res2 = coder.decode("secure password", res, salt_base)
     except:
         print("Wrong password!")
     else:
