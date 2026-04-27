@@ -8,9 +8,6 @@ using a codeword to transform it into a coded text file that is not human readab
 correct codeword. Simple character substitution alone is not sufficient.
 
 """
-
-import numpy as np
-import base64
 from enum import Enum
 from core.CaesarCipher import caesarCipher
 from core.CustomCipher import customCipher
@@ -28,7 +25,7 @@ class Coder:
     def encode(self, passkey: str, text: str, encryption_type: EncryptionType = EncryptionType.CUSTOM_CIPHER, custom_salt: str = None) -> str:
 
         print(f"Starting {encryption_type} Encryption:", text)
-        
+
         if encryption_type == EncryptionType.CAESAR_CIPHER:
             shift = self.caesarCoder.string_to_shift(passkey)
             result = self.caesarCoder.encode(shift, text)
