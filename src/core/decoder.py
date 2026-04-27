@@ -1,27 +1,23 @@
 """
 decoder.py
-
-Class for Data Decoding: class Decoder
-o This class will recover the original message from the coded file using the
-supplied codeword.
-o The coded file must include a code verification value that is checked during
-decoding to confirm the codeword is correct.
-o If a wrong codeword is supplied, decoding must fail clearly, must not generate
-a decoded output file, and must display an appropriate error status in the UI
-
-Currently example Caesar cipher implemented
 """
 
-from core.CaesarCipher import caesarCipher
-from core.CustomCipher import customCipher
+from core.CaesarCipher import CaesarCipher
+from core.CustomCipher import CustomCipher
 
 
 class Decoder:
+    """
+    Class for Data Decoding: class Decoder
+    * This class calls the appropriate decoder based on the file type
+    * Automatically removes file type designator CAES for caesar and CUST for custom
+    """
     def __init__(self):
-        self.caesarCoder = caesarCipher()
-        self.customCoder = customCipher()
+        self.caesarCoder = CaesarCipher()
+        self.customCoder = CustomCipher()
 
     def decode(self, passkey: str, encrypted_base64) -> str:
+        ""
         encryption_type = encrypted_base64[-4:]
         encrypted_base64 = encrypted_base64[:-4]
         if encryption_type == "CAES":

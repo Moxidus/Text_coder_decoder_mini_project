@@ -1,6 +1,8 @@
 """
+POP up dialog that lets you save files in windows.
 
-
+Based on https://github.com/zauberzeug/nicegui/blob/main/examples/local_file_picker/local_file_picker.py
+but customized
 """
 
 import platform
@@ -9,21 +11,19 @@ from nicegui import events, ui
 from core.fileHandler import FileType
 from ui.PopUpYesNo import popUpYesNo
 
-IS_WINDOWS = platform.system() == 'Windows'
 
+# windows only dependencies
+IS_WINDOWS = platform.system() == 'Windows'
 if IS_WINDOWS:
     import winreg
     import win32api
 
 
 class localFileSaver(ui.dialog):
-
+    """
+    This is a simple file Saver that allows you to save a file to the local filesystem where NiceGUI is running.
+    """
     def __init__(self, file_type: FileType) -> None:
-        """Local File Picker
-
-        This is a simple file Saver that allows you to save a file to the local filesystem where NiceGUI is running.
-
-        """
         super().__init__()
         self.path = self.get_desktop_path()
         self.file_suffix = "sect" if file_type == FileType.ENCRYPTED else "txt"
@@ -78,7 +78,7 @@ class localFileSaver(ui.dialog):
         # render folders and files
         self.grid.options['rowData'] = [
             {
-                'name': f'📁 <strong>{p.name}</strong>' if p.is_dir() else p.name,
+                'name': f'📁 <strong>{p.name}</strong>' if p.is_dir() else p.name, # using emojis as icons
                 'path': str(p),
             }
             for p in paths

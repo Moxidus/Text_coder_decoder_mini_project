@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.8
+
+## What's Changed
+* chore: documentation update
+
 ## 0.1.7
 
 ## What's Changed

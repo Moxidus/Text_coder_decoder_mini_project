@@ -1,10 +1,10 @@
 """
 fileHandler.py
 
-Class for text file handling: class FileHandler
-o Responsible to read a plaintext .txt file (original message).
-o Read a coded file (for decoding).
-o Write the coded output file and the decoded output file.
+Responsible to read a plaintext .txt file (original message).
+Read a coded file (for decoding).
+Write the coded output file and the decoded output file.
+Recognizing file types
 
 """
 
@@ -13,14 +13,14 @@ from enum import Enum
 import os
 
 class FileType(Enum):
+    "Stores what detected file type"
     UNKNOWN = 0
     TEXT = 1
     ENCRYPTED = 2
 
 
 class FileHandler:
-
-
+    "" 
     def open(self, file_path) -> tuple[FileType, str]:
         # check file extension and treat it as plain or encrypted file
         suffix = Path(file_path).suffix
@@ -55,4 +55,5 @@ class FileHandler:
             f.write(content)
 
     def get_file_size(self, file_path) -> int:
+        "returns file size"
         return os.path.getsize(file_path)

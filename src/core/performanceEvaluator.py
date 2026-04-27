@@ -1,11 +1,5 @@
 """
-Class for performance evaluation: class PerformanceEvaluator
-To evaluate system performance and provide numerical evidence such as:
-o Original message length (characters)
-o Coded file size vs original file size (overhead)
-o Decode success/failure indicator (and any additional metric you propose)
-o A minimum recommended metric is File Expansion Ratio (FER):
-FER (%) = (Coded file size / Original file size) × 100
+
 
 """
 from core.fileHandler import FileHandler
@@ -22,6 +16,15 @@ class PerformanceStats:
 
 
 class PerformanceEvaluator:
+    """
+    Class for performance evaluation: class PerformanceEvaluator
+    To evaluate system performance and provide numerical evidence such as:
+    * Original message length (characters)
+    * Coded file size vs original file size (overhead)
+    * Decode success/failure indicator (and any additional metric you propose)
+    * A minimum recommended metric is File Expansion Ratio (FER):
+    * FER (%) = (Coded file size / Original file size) × 100
+    """
     def __init__(self):
         self.file_handler = FileHandler()
 

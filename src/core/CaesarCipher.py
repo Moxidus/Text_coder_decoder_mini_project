@@ -6,7 +6,7 @@ Author: Moxidus
 
 
 
-class caesarCipher:
+class CaesarCipher:
     """
     Class implementing simple Caesar cipher.
     * Use encode() to encode
@@ -98,7 +98,7 @@ class caesarCipher:
         return shift % 26
     
 if __name__ == "__main__":
-    cipher = caesarCipher()
+    cipher = CaesarCipher()
 
     print(cipher.string_to_shift("0adsasdassdfghsfd gdfgsdf gsdfg sdfgsdfsd"))
 

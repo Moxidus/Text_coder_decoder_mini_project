@@ -2,6 +2,9 @@ from nicegui import ui
 
 
 class popUpYesNo(ui.dialog):
+    """
+    Simple pop up window dialog object
+    """
 
     def __init__(self, display_text: str) -> bool:
         """popUpYesNo dialog

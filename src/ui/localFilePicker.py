@@ -1,5 +1,5 @@
 """
-
+POP up dialog that lets you open files in windows very similar to file saver.
 
 Based on https://github.com/zauberzeug/nicegui/blob/main/examples/local_file_picker/local_file_picker.py
 """
@@ -16,12 +16,10 @@ if IS_WINDOWS:
 
 
 class localFilePicker(ui.dialog):
-
+    """
+    This is a simple file picker that allows you to pick a file from local filesystem where NiceGUI is running.
+    """
     def __init__(self) -> None:
-        """Local File Picker
-
-        This is a simple file picker that allows you to select a file from the local filesystem where NiceGUI is running.
-        """
         super().__init__()
         self.path = self.get_desktop_path()
 

@@ -1,19 +1,8 @@
 """
-Class for user interface (UI) functionalities: class UserInterface
-Minimum GUI requirements:
+This is the main UI file build by using NiceGui
+It contains all the main functions that call core and other utilities.
+like fileHandler, coder decoder and PerformanceEvaluator
 
-3
-▪ A Browse feature to select a plaintext .txt file
-    o A Codeword input field
-    o Separate actions:
-        ▪ Encode (Code) button/option
-        ▪ Decode button/option
-
-o Display useful status information:
-    ▪ selected file name/path
-    ▪ copyable output file path.
-    
-o operation status (success/failure + reason)
 
 """
 
@@ -27,6 +16,7 @@ from nicegui import ui, run, events
 import pyperclip
 
 class State:
+    "state file contacting current state variables used to bind to labels and buttons to update their values"
     key = ""
     salt = ""
     file_source_path = ""

@@ -9,8 +9,8 @@ correct codeword. Simple character substitution alone is not sufficient.
 
 """
 from enum import Enum
-from core.CaesarCipher import caesarCipher
-from core.CustomCipher import customCipher
+from core.CaesarCipher import CaesarCipher
+from core.CustomCipher import CustomCipher
 
 class EncryptionType(Enum):
     CAESAR_CIPHER = 1
@@ -19,8 +19,8 @@ class EncryptionType(Enum):
 
 class Coder:
     def __init__(self):
-        self.caesarCoder = caesarCipher()
-        self.customCoder = customCipher()
+        self.caesarCoder = CaesarCipher()
+        self.customCoder = CustomCipher()
 
     def encode(self, passkey: str, text: str, encryption_type: EncryptionType = EncryptionType.CUSTOM_CIPHER, custom_salt: str = None) -> str:
 
