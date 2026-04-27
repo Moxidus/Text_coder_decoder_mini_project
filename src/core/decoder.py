@@ -14,7 +14,6 @@ Currently example Caesar cipher implemented
 
 from core.CaesarCipher import caesarCipher
 from core.CustomCipher import customCipher
-from core.coder import EncryptionType
 
 
 class Decoder:
@@ -22,15 +21,17 @@ class Decoder:
         self.caesarCoder = caesarCipher()
         self.customCoder = customCipher()
 
-    def decode(self, passkey: str, encrypted_base64, encryption_type: EncryptionType = EncryptionType.CUSTOM_CIPHER) -> str:
-
-        if encryption_type == EncryptionType.CAESAR_CIPHER:
+    def decode(self, passkey: str, encrypted_base64) -> str:
+        encryption_type = encrypted_base64[-4:]
+        encrypted_base64 = encrypted_base64[:-4]
+        if encryption_type == "CAES":
             shift = self.caesarCoder.string_to_shift(passkey)
             result = self.caesarCoder.decode(shift, encrypted_base64)
             return result
-        else:
+        elif encryption_type == "CUST":
             result = self.customCoder.decode(passkey, encrypted_base64)
             return result
-
+        else:
+            Exception("Unknown Encryption type")
 
 

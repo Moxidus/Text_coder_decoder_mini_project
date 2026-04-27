@@ -29,9 +29,11 @@ class Coder:
         if encryption_type == EncryptionType.CAESAR_CIPHER:
             shift = self.caesarCoder.string_to_shift(passkey)
             result = self.caesarCoder.encode(shift, text)
+            result += "CAES" # append encryption type label
             return result
         else:
             result = self.customCoder.encode(passkey, text, custom_salt)
+            result += "CUST" # append encryption type label
             return result
 
 

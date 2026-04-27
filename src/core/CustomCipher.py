@@ -192,7 +192,7 @@ class customCipher:
 
 if __name__ == "__main__":
     coder = customCipher()
-    original = "Why did you make me do this? You're fighting so you can watch everyone around you die! Think, Mark!"
+    original = "Why did you make me do this? You're fighting so you can watch everyone around you die! Think, Mark!"*5000
     print("Start test")
     print("origin  text:", original)
     encoded_result = coder.encode("secure password", original, custom_salt="abcdefgh")
@@ -205,3 +205,5 @@ if __name__ == "__main__":
         print("Wrong password!")
     else:
         print("Decoded text:", res2)
+        
+        print(f"size compare ORIG {len(original)} ENC {len(encoded_result)}")

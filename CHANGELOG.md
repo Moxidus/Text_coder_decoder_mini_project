@@ -13,6 +13,9 @@
 * chore: fixed unit tests for Coder
 * feat: decoder supports both CaesarCipher and CaesarCipher
 * chore: fixed unit tests for Decoder
+* feat: Files now get labeled based on what type of encryption the use
+* feat: Added option to select different encryption 
+
 
 ## 0.1.5
 
