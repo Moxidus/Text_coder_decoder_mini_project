@@ -17,6 +17,7 @@
 * feat: Added option to select different encryption 
 * feat: Encryption runs on different threads to not block UI updates
 * feat: Enabled dark mode
+* feat: updated primary color
 
 
 ## 0.1.5

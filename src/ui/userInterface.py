@@ -79,12 +79,16 @@ class UserInterface:
             self.state.file_type = file_type
             self.state.file_content = file_content
         
-        # disable save button
-        self.state.file_ready = False
+        
+        self.state.file_ready = False # disable save button
+        self.state.file_output = None
         
 
 
     def index(self):
+        
+        ui.colors(primary="#B166B9")
+
         with ui.header():
             ui.label("Text Coder and Decoder").classes("text-white text-2xl text-center w-full")
 
@@ -139,10 +143,30 @@ class UserInterface:
             passwd_strength = 1
         else:
             passwd_strength = len(self.state.key) / 10
+
+        # Adapt colors to password strength
+        if passwd_strength == 0:
+            self.password_strength_bar.classes(add="bg-red-500")
+        elif passwd_strength < 0.5:
+            self.password_strength_bar.classes(remove="bg-red-500")
+            self.password_strength_bar.props("color=red")
+        elif passwd_strength < 0.8:
+            self.password_strength_bar.classes(remove="bg-red-500")
+            self.password_strength_bar.props("color=yellow")
+        elif passwd_strength >= 1.0:
+            self.password_strength_bar.classes(remove="bg-red-500")
+            self.password_strength_bar.props("color=green")
+
+        
         self.password_strength_bar.value = passwd_strength
 
 
     async def handle_encode(self, e: events.GenericEventArguments):
+
+        if not self.state.key or len(self.state.key) == 0:
+            ui.notify(f"Password can't be empty", color="red")
+            return
+
         ui.notify(f"Encrypting please wait...")
 
         result = await run.cpu_bound( # prevents UI from getting stuck plus it can be slow at times
@@ -173,7 +197,7 @@ class UserInterface:
             self.state.file_type = FileType.TEXT
             ui.notify(f"Successfully decrypted content")
         except:
-            ui.notify(f"Wrong password!")
+            ui.notify(f"Wrong password!", color="red")
             return
 
     def handle_copy(self, e: events.GenericEventArguments):
