@@ -11,6 +11,8 @@
 * feat: implemented CustomCipher supports custom salt (used for testing)
 * feat: Coder supports both CaesarCipher and CaesarCipher
 * chore: fixed unit tests for Coder
+* feat: decoder supports both CaesarCipher and CaesarCipher
+* chore: fixed unit tests for Decoder
 
 ## 0.1.5
 

@@ -27,6 +27,9 @@ class customCipher:
 
             
         if custom_salt:
+            if len(custom_salt) != 8:
+                raise Exception("Invalid salt length")
+            
             salt_base = custom_salt
         else:
             salt_base = self.new_salt()
@@ -81,6 +84,7 @@ class customCipher:
 
         salt_base = encrypted_base64[-8:]
         encrypted_base64 = encrypted_base64[:-8]
+        
 
         hashed_key = self.heavy_text_hash(passkey)
         simple_salt = self.heavy_text_hash(salt_base)

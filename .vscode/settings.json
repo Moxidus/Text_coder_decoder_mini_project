@@ -4,5 +4,10 @@
   "terminal.integrated.env.windows": {
     "PYTHONPATH": "src"
   },
-  "python.analysis.extraPaths": ["src"]
+  "python.analysis.extraPaths": [
+    "src"
+  ],
+  "cSpell.words": [
+    "capibilities"
+  ]
 }

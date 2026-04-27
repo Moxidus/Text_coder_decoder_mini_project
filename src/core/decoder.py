@@ -9,32 +9,28 @@ decoding to confirm the codeword is correct.
 o If a wrong codeword is supplied, decoding must fail clearly, must not generate
 a decoded output file, and must display an appropriate error status in the UI
 
-Curretly example Ceasar cypher implemented
+Currently example Caesar cipher implemented
 """
 
+from core.CaesarCipher import caesarCipher
+from core.CustomCipher import customCipher
+from core.coder import EncryptionType
+
+
 class Decoder:
-    default_shift = 5
     def __init__(self):
-        pass
-    
+        self.caesarCoder = caesarCipher()
+        self.customCoder = customCipher()
 
-    def decode(self, passkey: str, text : str) -> str:
-        text = text.lower()
+    def decode(self, passkey: str, encrypted_base64, encryption_type: EncryptionType = EncryptionType.CUSTOM_CIPHER) -> str:
 
-        encrypted_text = ""
-
-        for char in text:
-            
-            if not char.isalpha():
-                encrypted_text += char
-                continue
-
-            ascii_val = ord(char) - self.default_shift
-            if ascii_val < ord("a"):
-                ascii_val += 26
-            encrypted_text += chr(ascii_val)
-
-        return encrypted_text
+        if encryption_type == EncryptionType.CAESAR_CIPHER:
+            shift = self.caesarCoder.string_to_shift(passkey)
+            result = self.caesarCoder.decode(shift, encrypted_base64)
+            return result
+        else:
+            result = self.customCoder.decode(passkey, encrypted_base64)
+            return result
 
 
 

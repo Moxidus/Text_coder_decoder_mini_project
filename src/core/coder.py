@@ -34,15 +34,6 @@ class Coder:
             result = self.customCoder.encode(passkey, text, custom_salt)
             return result
 
-    def decode(self, passkey: str, encrypted_base64, encryption_type: EncryptionType = EncryptionType.CUSTOM_CIPHER) -> str:
-
-        if encryption_type == EncryptionType.CAESAR_CIPHER:
-            shift = self.caesarCoder.string_to_shift(passkey)
-            result = self.caesarCoder.decode(shift, encrypted_base64)
-            return result
-        else:
-            result = self.customCoder.decode(passkey, encrypted_base64, None)
-            return result
 
 
 if __name__ == "__main__":
