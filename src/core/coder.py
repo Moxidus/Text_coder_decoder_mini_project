@@ -25,7 +25,10 @@ class Coder:
         self.caesarCoder = caesarCipher()
         self.customCoder = customCipher()
 
-    def encode(self, passkey: str, text : str, encryption_type: EncryptionType = EncryptionType.CUSTOM_CIPHER, custom_salt: str = None) -> str:
+    def encode(self, passkey: str, text: str, encryption_type: EncryptionType = EncryptionType.CUSTOM_CIPHER, custom_salt: str = None) -> str:
+
+        print(f"Starting {encryption_type} Encryption:", text)
+        
         if encryption_type == EncryptionType.CAESAR_CIPHER:
             shift = self.caesarCoder.string_to_shift(passkey)
             result = self.caesarCoder.encode(shift, text)
@@ -34,7 +37,9 @@ class Coder:
         else:
             result = self.customCoder.encode(passkey, text, custom_salt)
             result += "CUST" # append encryption type label
+            self.last_result = result # for multi threading
             return result
+        
 
 
 

@@ -22,9 +22,9 @@ from ui.localFileSaver import localFileSaver
 from core.fileHandler import FileHandler, FileType
 from core.coder import Coder, EncryptionType
 from core.decoder import Decoder
-from nicegui import events, ui
+from nicegui import ui, run, events
 import pyperclip
-
+from threading import Thread
 
 class State:
     key = ""
@@ -143,23 +143,39 @@ class UserInterface:
         self.password_strength_bar.value = passwd_strength
 
 
-    def handle_encode(self, e: events.GenericEventArguments):
-        ui.notify(f"Creating encrypted version of {self.state.file_path}")
+    async def handle_encode(self, e: events.GenericEventArguments):
+        ui.notify(f"Encrypting please wait...")
 
-        result = self.coder.encode(self.state.key, self.state.file_content)
+        result = await run.cpu_bound( # prevents UI from getting stuck plus it can be slow at times
+            self.coder.encode,
+            self.state.key,
+            self.state.file_content,
+            self.state.selected_cipher,
+        )
 
         self.state.file_content = result
         self.state.file_ready = True
         self.state.file_type = FileType.ENCRYPTED
+        ui.notify("Successfully encrypted content")
 
-    def handle_decode(self, e: events.GenericEventArguments):
-        ui.notify(f"Decrypting {self.state.file_path}")
+    async def handle_decode(self, e: events.GenericEventArguments):
+        ui.notify(f"Decrypting please wait...")
+
         
-        result = self.decoder.decode(self.state.key, self.state.file_content)
-
-        self.state.file_content = result
-        self.state.file_ready = True
-        self.state.file_type = FileType.TEXT
+        try:
+            result = await run.cpu_bound( # prevents UI from getting stuck plus it can be slow at times
+                self.decoder.decode,
+                self.state.key, 
+                self.state.file_content
+            )
+            
+            self.state.file_content = result
+            self.state.file_ready = True
+            self.state.file_type = FileType.TEXT
+            ui.notify(f"Successfully decrypted content")
+        except:
+            ui.notify(f"Wrong password!")
+            return
 
     def handle_copy(self, e: events.GenericEventArguments):
         ui.notify(f"Copied path to clipboard")

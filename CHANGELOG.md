@@ -15,6 +15,7 @@
 * chore: fixed unit tests for Decoder
 * feat: Files now get labeled based on what type of encryption the use
 * feat: Added option to select different encryption 
+* feat: Encryption runs on different threads to not block UI updates
 
 
 ## 0.1.5
