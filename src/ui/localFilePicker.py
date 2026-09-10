@@ -14,6 +14,7 @@ if IS_WINDOWS:
     import winreg
     import win32api
 
+# test
 
 class localFilePicker(ui.dialog):
     """
